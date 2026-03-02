@@ -1,0 +1,64 @@
+.transcript-view {
+  width: 100%;
+}
+
+.transcript-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.transcript-header h3 {
+  font-size: 1.2rem;
+  color: #e2e8f0;
+}
+
+.copy-button {
+  background: rgba(12, 24, 28, 0.9);
+  color: rgba(226, 232, 240, 0.9);
+  border: 1px solid rgba(24, 210, 195, 0.4);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  will-change: transform, box-shadow;
+}
+
+.copy-button:hover {
+  background: rgba(24, 210, 195, 0.15);
+  border-color: rgba(24, 210, 195, 0.6);
+  box-shadow: 0 12px 22px rgba(2, 6, 18, 0.35);
+  transform: translateY(-1px);
+}
+
+.copy-button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 8px 16px rgba(2, 6, 18, 0.3);
+}
+
+.transcript-content {
+  background: rgba(10, 15, 24, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  line-height: 1.8;
+  font-size: 1rem;
+  color: rgba(226, 232, 240, 0.9);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.empty-transcript {
+  color: rgba(148, 163, 184, 0.7);
+  text-align: center;
+  padding: 2rem;
+}
+
+
+
+
+

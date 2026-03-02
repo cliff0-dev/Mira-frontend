@@ -1,0 +1,190 @@
+.statement-card {
+  background: rgba(10, 15, 24, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  animation: uiFadeIn 420ms ease-out both;
+  cursor: pointer;
+}
+
+.statement-card:hover {
+  box-shadow: 0 12px 28px rgba(2, 6, 18, 0.45);
+  transform: translateY(-2px);
+  border-color: rgba(24, 210, 195, 0.45);
+}
+
+.statement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.statement-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.statement-id {
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.8);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.speaker-badge {
+  background: rgba(56, 181, 255, 0.18);
+  color: #7dd3fc;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.phase-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.subcategory-badge {
+  background: rgba(148, 163, 184, 0.15);
+  color: rgba(148, 163, 184, 0.85);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.statement-time {
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.statement-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.statement-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.confidence-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.confidence-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.confidence-item span:first-child {
+  min-width: 80px;
+  color: rgba(148, 163, 184, 0.8);
+  font-weight: 500;
+}
+
+.confidence-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  height: 20px;
+  background: rgba(12, 18, 30, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s;
+}
+
+.confidence-value {
+  position: absolute;
+  right: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.statement-stats {
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 0.85rem;
+}
+
+.audio-play-button {
+  background: rgba(12, 24, 28, 0.9);
+  color: rgba(226, 232, 240, 0.9);
+  border: 1px solid rgba(24, 210, 195, 0.4);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  font-size: 14px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.audio-play-button:hover {
+  background: rgba(24, 210, 195, 0.2);
+  transform: scale(1.1);
+  box-shadow: 0 0 14px rgba(24, 210, 195, 0.3);
+}
+
+.audio-play-button:active {
+  transform: scale(0.95);
+}
+
+.audio-play-button:disabled {
+  background: rgba(148, 163, 184, 0.2);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.audio-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.audio-error {
+  color: #fca5a5;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}

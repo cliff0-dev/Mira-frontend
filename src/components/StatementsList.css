@@ -1,0 +1,16 @@
+.statements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+
+
+
+

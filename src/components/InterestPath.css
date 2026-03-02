@@ -1,0 +1,103 @@
+.interest-path {
+  background: rgba(10, 15, 24, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.interest-path-header {
+  margin-bottom: 1rem;
+}
+
+.interest-path-header h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: #e2e8f0;
+}
+
+.interest-path-header p {
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.75);
+  margin: 0;
+}
+
+.interest-path-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  margin: 1rem 0;
+}
+
+.interest-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.axis-label {
+  font-size: 10px;
+  fill: rgba(148, 163, 184, 0.75);
+  font-weight: 500;
+}
+
+.time-markers {
+  position: relative;
+  width: 100%;
+  height: 25px;
+  margin-top: 5px;
+}
+
+.time-marker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: rgba(148, 163, 184, 0.7);
+  white-space: nowrap;
+}
+
+.time-marker::before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 8px;
+  background: rgba(148, 163, 184, 0.6);
+}
+
+.interest-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.legend-line {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.interest-path-empty {
+  padding: 2rem;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.7);
+  font-style: italic;
+}

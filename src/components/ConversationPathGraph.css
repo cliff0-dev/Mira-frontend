@@ -1,0 +1,681 @@
+.conversation-path-graph {
+  width: 100%;
+  padding: 32px;
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 0;
+  animation: uiFadeIn 420ms ease-out both;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.conversation-path-graph:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 60px rgba(3, 6, 18, 0.6);
+  border-color: rgba(24, 210, 195, 0.28);
+}
+
+.emotion-path-graph {
+  width: 100%;
+  padding: 28px;
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  animation: uiFadeIn 420ms ease-out both;
+}
+
+.emotion-path-graph::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.18) 1px, transparent 0);
+  background-size: 22px 22px;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.emotion-path-graph.embedded {
+  margin-top: 24px;
+}
+
+.emotion-path-graph.embedded {
+  margin-top: 0;
+}
+
+.graph-between {
+  width: 100%;
+}
+
+.graph-header {
+  margin-bottom: 20px;
+}
+
+.graph-header h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.5em;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.graph-header p {
+  margin: 0;
+  color: rgba(148, 163, 184, 0.75);
+  font-size: 0.9em;
+}
+
+.emotion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.emotion-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.emotion-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #e2e8f0 0%, #e2e8f0 25%, transparent 28%),
+    radial-gradient(circle at 70% 70%, rgba(24, 210, 195, 0.9) 0%, rgba(24, 210, 195, 0.2) 60%, transparent 70%);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 0 12px rgba(24, 210, 195, 0.35);
+}
+
+.emotion-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.emotion-toggle {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(10, 15, 24, 0.8);
+  color: rgba(226, 232, 240, 0.7);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.emotion-toggle.active,
+.emotion-toggle:hover {
+  border-color: rgba(24, 210, 195, 0.55);
+  color: var(--accent);
+  box-shadow: 0 0 16px rgba(24, 210, 195, 0.2);
+}
+
+.emotion-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(226, 232, 240, 0.7);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.8);
+}
+
+.graph-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.graph-empty {
+  padding: 40px;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+/* Interest Chart Section */
+.interest-chart-section {
+  width: 100%;
+  min-height: 300px;
+}
+
+/* Phase Flow Section */
+.phase-flow-section {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.phase-flow-title {
+  margin: 0 0 15px 0;
+  font-size: 1.2em;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.phase-flow-container {
+  width: 100%;
+  padding: 20px 0;
+  /* Remove horizontal scroll when zoomed out - show all boxes */
+  overflow-x: hidden;
+  overflow-y: visible;
+  position: relative;
+}
+
+.phase-flow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  width: auto;
+  padding: 20px 10px;
+  background: rgba(12, 18, 30, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.phase-flow-absolute {
+  position: relative;
+  width: 100%;
+  background: rgba(12, 18, 30, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.phase-node-absolute {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 6px;
+  min-height: 40px;
+  min-width: 20px;
+  background: rgba(12, 18, 30, 0.92);
+  backdrop-filter: blur(10px);
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(2, 6, 18, 0.4);
+  color: #e2e8f0;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, min-width 0.2s;
+  z-index: 10;
+}
+
+.phase-node-absolute:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 20;
+}
+
+
+.phase-arrow-absolute {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.phase-flow-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.phase-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  background: rgba(12, 18, 30, 0.92);
+  backdrop-filter: blur(10px);
+  border: 2px solid;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(2, 6, 18, 0.4);
+  color: #e2e8f0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phase-node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Tooltip styles */
+.phase-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+  animation: fadeIn 0.2s ease-in;
+  /* Ensure tooltip doesn't go off-screen */
+  max-width: 400px;
+  min-width: 250px;
+  width: max-content;
+}
+
+.phase-tooltip-content {
+  background: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  font-size: 0.85em;
+  backdrop-filter: blur(10px);
+  position: relative;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+.phase-tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.95);
+}
+
+.phase-tooltip-name {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 6px;
+}
+
+.phase-tooltip-speaker {
+  font-size: 0.9em;
+  margin-bottom: 8px;
+  color: #fff;
+  opacity: 0.95;
+}
+
+.phase-tooltip-speaker strong {
+  color: #4CAF50;
+  margin-right: 4px;
+}
+
+.phase-tooltip-statements {
+  font-size: 0.85em;
+  margin-bottom: 10px;
+  color: #fff;
+  opacity: 0.95;
+}
+
+.phase-tooltip-statements strong {
+  color: #2196F3;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.phase-tooltip-statement-text {
+  margin: 4px 0;
+  padding: 4px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-style: italic;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.phase-tooltip-more {
+  margin-top: 4px;
+  font-size: 0.8em;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.phase-tooltip-metadata {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.85em;
+}
+
+.phase-tooltip-duration,
+.phase-tooltip-time,
+.phase-tooltip-count {
+  font-size: 0.85em;
+  opacity: 0.9;
+  margin-bottom: 3px;
+  color: #fff;
+}
+
+.phase-tooltip-count {
+  margin-top: 4px;
+  font-weight: 500;
+  color: #FFC107;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.phase-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 50px;
+}
+
+.phase-flow-placeholder {
+  padding: 40px;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.7);
+  background: rgba(12, 18, 30, 0.6);
+  border-radius: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .conversation-path-graph {
+    padding: 15px;
+  }
+
+  .phase-flow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .phase-flow-item {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .phase-arrow {
+    transform: rotate(90deg);
+    margin: 10px 0;
+  }
+
+  .phase-node {
+    width: 100%;
+  }
+}
+
+/* Custom Recharts styling */
+.recharts-wrapper {
+  font-family: inherit;
+}
+
+.recharts-legend-wrapper {
+  padding-top: 20px !important;
+}
+
+.recharts-legend-item {
+  margin-right: 20px !important;
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 1000;
+}
+
+.conversation-path-graph .recharts-text,
+.conversation-path-graph .recharts-cartesian-axis-tick-value {
+  fill: rgba(148, 163, 184, 0.8);
+}
+
+.conversation-path-graph .recharts-cartesian-grid line {
+  stroke: rgba(148, 163, 184, 0.12);
+}
+
+.conversation-path-graph .recharts-legend-item-text {
+  color: rgba(226, 232, 240, 0.85) !important;
+}
+
+.emotion-chart-shell {
+  position: relative;
+  padding: 18px 18px 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(10, 15, 24, 0.78);
+  overflow: hidden;
+}
+
+.emotion-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.emotion-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(148, 163, 184, 0.2);
+}
+
+.emotion-row:last-child {
+  border-bottom: none;
+}
+
+.emotion-row-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(226, 232, 240, 0.7);
+  flex-wrap: wrap;
+}
+
+.emotion-label-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.emotion-name {
+  font-weight: 600;
+}
+
+.emotion-row-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.emotion-chip {
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(226, 232, 240, 0.6);
+  background: rgba(8, 12, 20, 0.7);
+}
+
+.emotion-chip.active {
+  border-color: rgba(24, 210, 195, 0.45);
+  color: var(--accent);
+  background: rgba(12, 24, 28, 0.85);
+}
+
+.emotion-tooltip {
+  background: rgba(8, 12, 18, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: rgba(226, 232, 240, 0.9);
+  min-width: 120px;
+  box-shadow: 0 12px 24px rgba(2, 6, 18, 0.5);
+}
+
+.emotion-tooltip-time {
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.75);
+  margin-bottom: 6px;
+}
+
+.emotion-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+}
+
+.emotion-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(226, 232, 240, 0.35);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.emotion-row-chart {
+  width: 100%;
+}
+
+.emotion-chart-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.28) 1px, transparent 0);
+  background-size: 16px 16px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.emotion-chart-shell .recharts-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.emotion-chart-shell .recharts-cartesian-grid line {
+  stroke: rgba(148, 163, 184, 0.24);
+  stroke-dasharray: 1 7;
+}
+
+.emotion-chart-shell .recharts-text,
+.emotion-chart-shell .recharts-cartesian-axis-tick-value {
+  fill: rgba(148, 163, 184, 0.75);
+}
+
+.recharts-default-tooltip {
+  background: rgba(10, 15, 24, 0.95) !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  border-radius: 10px !important;
+  color: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 12px 24px rgba(2, 6, 18, 0.5);
+}
+
+/* Selection rectangle for click-and-drag zoom */
+.selection-rectangle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  border: 2px dashed #2196F3;
+  background-color: rgba(33, 150, 243, 0.1);
+  animation: selectionPulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+}
+
+.selection-hint {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.8);
+  background: rgba(8, 12, 20, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 20;
+}
+
+.selection-time-display {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--accent);
+  background: rgba(8, 12, 20, 0.7);
+  border: 1px solid rgba(24, 210, 195, 0.4);
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 20;
+}
+
+.selection-handle {
+  width: 6px;
+  background: rgba(24, 210, 195, 0.8);
+  box-shadow: 0 0 12px rgba(24, 210, 195, 0.5);
+}
+
+@keyframes selectionPulse {
+  0%, 100% {
+    opacity: 0.6;
+    box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.5);
+  }
+}
+
+.interest-chart-section {
+  position: relative;
+  user-select: none; /* Prevent text selection while dragging */
+}.interest-chart-section.selecting {
+  cursor: crosshair !important;
+}

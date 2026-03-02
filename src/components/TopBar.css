@@ -1,0 +1,116 @@
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6, 9, 15, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 12px 30px rgba(2, 6, 18, 0.45);
+}
+
+.top-bar-content {
+  width: 100%;
+  margin: 0 auto;
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.app-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e5e7eb;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin: 0;
+}
+
+.app-subtitle {
+  font-size: 13px;
+  color: rgba(148, 163, 184, 0.85);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.top-bar-right {
+  display: flex;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e5e7eb 0%, #e5e7eb 18%, transparent 20%),
+    radial-gradient(circle at 70% 70%, rgba(24, 210, 195, 0.8) 0%, rgba(24, 210, 195, 0.2) 55%, transparent 60%);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 0 12px rgba(24, 210, 195, 0.35);
+  animation: uiGlowPulse 4s ease-in-out infinite;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.icon-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 38, 0.72);
+  color: rgba(226, 232, 240, 0.8);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+  will-change: transform, box-shadow;
+}
+
+.icon-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-button:hover {
+  border-color: rgba(24, 210, 195, 0.5);
+  color: #e5e7eb;
+  background: rgba(18, 30, 45, 0.85);
+  box-shadow: 0 0 16px rgba(24, 210, 195, 0.25);
+  transform: translateY(-1px);
+}
+
+.icon-button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 0 10px rgba(24, 210, 195, 0.2);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid rgba(24, 210, 195, 0.7);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .top-bar-content {
+    padding: 14px 20px;
+  }
+  
+  .app-subtitle {
+    display: none;
+  }
+}

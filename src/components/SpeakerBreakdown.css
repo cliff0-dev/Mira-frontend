@@ -1,0 +1,75 @@
+.speaker-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.speaker-card {
+  background: rgba(10, 15, 24, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.speaker-header {
+  margin-bottom: 1.5rem;
+}
+
+.speaker-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+}
+
+.speaker-stats {
+  display: flex;
+  gap: 1rem;
+  color: rgba(148, 163, 184, 0.75);
+  font-size: 0.9rem;
+}
+
+.phase-breakdown {
+  margin-top: 1rem;
+}
+
+.phase-breakdown h4 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.phase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.phase-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: rgba(12, 18, 30, 0.9);
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.phase-name {
+  font-weight: 500;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.phase-count {
+  background: rgba(12, 24, 28, 0.9);
+  color: rgba(226, 232, 240, 0.9);
+  border: 1px solid rgba(24, 210, 195, 0.4);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+
+
+
+

@@ -1,0 +1,87 @@
+.metrics-panel {
+  width: 100%;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.metric-card {
+  background: rgba(10, 15, 24, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  animation: uiFadeIn 420ms ease-out both;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(2, 6, 18, 0.45);
+  border-color: rgba(24, 210, 195, 0.3);
+}
+
+.metric-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+  border-bottom: 2px solid rgba(24, 210, 195, 0.6);
+  padding-bottom: 0.5rem;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.metric-item:last-child {
+  margin-bottom: 0;
+}
+
+.metric-label {
+  font-weight: 500;
+  color: rgba(148, 163, 184, 0.8);
+  flex-shrink: 0;
+}
+
+.metric-value-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 24px;
+  background: rgba(12, 18, 30, 0.9);
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 150px;
+}
+
+.metric-bar-fill {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.3s;
+}
+
+.metric-value {
+  position: absolute;
+  right: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.metric-value-simple {
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.9);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+
+
+
+
