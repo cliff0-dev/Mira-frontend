@@ -13,8 +13,39 @@ const QUICK_QUESTIONS = [
 
 const isBulletLine = (line) => /^(\*|-|•)\s+/.test(line) || /^\d+\.\s+/.test(line)
 
+const normalizeListAnswer = (answer) => {
+  if (!answer) return null
+  const trimmed = answer.trim()
+  if (!trimmed.startsWith('[') || !trimmed.endsWith(']')) {
+    return null
+  }
+
+  const inner = trimmed.slice(1, -1).trim()
+  if (!inner) return []
+
+  // Try JSON parse first (for ["a","b"])
+  try {
+    const parsed = JSON.parse(trimmed)
+    if (Array.isArray(parsed)) {
+      return parsed.map((item) => String(item).trim()).filter(Boolean)
+    }
+  } catch (err) {
+    // fall through
+  }
+
+  // Fallback for single-quoted lists: ['a', 'b']
+  const parts = inner.split(/'\s*,\s*'|"\s*,\s*"/)
+  return parts
+    .map((part) => part.replace(/^['"]|['"]$/g, '').trim())
+    .filter(Boolean)
+}
+
 const parseAnswerBlocks = (answer) => {
   if (!answer) return []
+  const normalizedList = normalizeListAnswer(answer)
+  if (normalizedList) {
+    return [{ type: 'list', content: normalizedList }]
+  }
   const lines = answer.split('\n')
   const blocks = []
   let listBuffer = []
@@ -73,10 +104,20 @@ function ConversationQueryPanel({ conversationId, statements = [], rawTranscript
     return map
   }, [statements])
 
-  const answerBlocks = useMemo(
-    () => parseAnswerBlocks(result?.answer || ''),
-    [result]
-  )
+  const answerBlocks = useMemo(() => {
+    return parseAnswerBlocks(result?.answer || '')
+  }, [result])
+
+  const evidenceItems = useMemo(() => {
+    if (!Array.isArray(result?.evidence_statement_ids)) return []
+    return result.evidence_statement_ids.map((id) => {
+      const statement = statementMap.get(Number(id))
+      return {
+        id,
+        statement,
+      }
+    })
+  }, [result, statementMap])
 
   const submitQuery = async (event) => {
     event.preventDefault()
@@ -170,48 +211,70 @@ function ConversationQueryPanel({ conversationId, statements = [], rawTranscript
             </div>
           </div>
           <div className="query-answer">
-            {answerBlocks.map((block, index) => {
-              if (block.type === 'list') {
+            {Array.isArray(result?.answer_sentences) && result.answer_sentences.length > 0 ? (
+              <div className="query-answer-sentences">
+                {result.answer_sentences.map((sentence, index) => {
+                  const evidenceIds = Array.isArray(sentence.evidence_statement_ids)
+                    ? sentence.evidence_statement_ids
+                    : []
+                  const tooltipStatements = evidenceIds.map((id) => ({
+                    id,
+                    statement: statementMap.get(Number(id)),
+                  }))
+                  const content = sentence.text || ''
+                  const isBullet = result.answer_format === 'bullets'
+                  const Wrapper = isBullet ? 'li' : 'span'
+                  return (
+                    <Wrapper key={`sentence-${index}`} className="query-answer-sentence">
+                      <span className="query-answer-sentence-text">
+                        {content}
+                        {tooltipStatements.length > 0 && (
+                          <span className="query-answer-sentence-tooltip">
+                            <span className="evidence-tooltip-title">Evidence</span>
+                            <div className="evidence-list">
+                              {tooltipStatements.map(({ id, statement }) => (
+                                <div key={`sentence-evidence-${id}`} className="evidence-item">
+                                  <div className="evidence-meta">
+                                    <span>#{id}</span>
+                                    {statement?.speaker && <span>{statement.speaker}</span>}
+                                    {statement?.phase && <span>{statement.phase}</span>}
+                                  </div>
+                                  <p>{statement?.text || 'Statement not available in current list.'}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </span>
+                        )}
+                      </span>
+                    </Wrapper>
+                  )
+                })}
+              </div>
+            ) : (
+              answerBlocks.map((block, index) => {
+                if (block.type === 'list') {
+                  return (
+                    <ul key={`list-${index}`} className="query-answer-list">
+                      {block.content.map((item, idx) => (
+                        <li key={`${index}-${idx}`}>{item}</li>
+                      ))}
+                    </ul>
+                  )
+                }
                 return (
-                  <ul key={`list-${index}`} className="query-answer-list">
-                    {block.content.map((item, idx) => (
-                      <li key={`${index}-${idx}`}>{item}</li>
-                    ))}
-                  </ul>
+                  <p key={`para-${index}`} className="query-answer-paragraph">
+                    {block.content}
+                  </p>
                 )
-              }
-              return (
-                <p key={`para-${index}`} className="query-answer-paragraph">
-                  {block.content}
-                </p>
-              )
-            })}
+              })
+            )}
           </div>
 
           <p className="query-model">Model: {result.model}</p>
 
-          {Array.isArray(result.evidence_statement_ids) && result.evidence_statement_ids.length > 0 && (
+          {evidenceItems.length > 0 && (
             <div className="query-evidence">
-              <h5>Evidence (hover to view)</h5>
-              <div className="evidence-chips">
-                {result.evidence_statement_ids.map((id) => {
-                  const statement = statementMap.get(Number(id))
-                  return (
-                    <span key={`${id}-${statement?.id ?? 'missing'}`} className="evidence-chip">
-                      #{id}
-                      <span className="evidence-tooltip">
-                        <span className="evidence-tooltip-meta">
-                          {statement?.speaker && <span>{statement.speaker}</span>}
-                          {statement?.phase && <span>{statement.phase}</span>}
-                        </span>
-                        <span className="evidence-tooltip-text">
-                          {statement?.text || 'Statement not available in current list.'}
-                        </span>
-                      </span>
-                    </span>
-                  )
-                })}
-              </div>
+              <h5>Evidence is shown on hover for each sentence</h5>
             </div>
           )}
         </div>
