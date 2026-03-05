@@ -46,7 +46,6 @@ function AnalysisResults({ data }) {
   }, [data])
 
   // Only include valid phases: Open, Premise, Evaluation, Narrative, Close, Baseline
-  // Map TopicsOfDiscussion, Value, Voice, Escalation to Baseline
   const validPhases = ['Open', 'Premise', 'Evaluation', 'Narrative', 'Close', 'Baseline']
   const mappedPhases = data.statements.map(s => {
     const phase = s.phase
