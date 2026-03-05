@@ -11,7 +11,7 @@ import './AnalysisResults.css'
 
 function AnalysisResults({ data }) {
   const [activeTab, setActiveTab] = useState('overview')
-  const [selectedPhases, setSelectedPhases] = useState(new Set(['all'])) // Changed to Set for multiple selection
+  const [selectedPhases, setSelectedPhases] = useState(new Set(['all'])) 
   const [selectedSpeaker, setSelectedSpeaker] = useState('all')
   const [selectedStatementId, setSelectedStatementId] = useState(null)
   const transcriptRefs = useRef({})
