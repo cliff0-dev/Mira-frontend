@@ -26,7 +26,6 @@ function AnalysisResults({ data }) {
     return () => window.removeEventListener('mira:navigate', handleNavigate)
   }, [])
 
-  // Debug: Check which classification model is being used
   useEffect(() => {
     if (data?.statements?.length > 0) {
       const firstStatement = data.statements[0]
