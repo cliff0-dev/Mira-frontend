@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import TranscriptPanel from './TranscriptPanel'
 import ConversationPathGraph from './ConversationPathGraph'
-// import EmotionPathGraph from './EmotionPathGraph'
+import EmotionPathGraph from './EmotionPathGraph'
 import StagesChart from './StagesChart'
 import PhaseDistributionChart from './PhaseDistributionChart'
 import KPICards from './KPICards'
@@ -166,17 +166,17 @@ function AnalysisResults({ data }) {
               statements={data.statements} 
               duration={data.metadata.audio_duration}
               speakers={data.speakers}
-                // betweenContent={({ visibleStart, visibleEnd, zoomLevel }) => (
-                //   <EmotionPathGraph
-                //     emotionTimeline={data.emotion_timeline}
-                //     duration={data.metadata.audio_duration}
-                //     speakers={data.speakers}
-                //     embedded
-                //     zoomStart={visibleStart}
-                //     zoomEnd={visibleEnd}
-                //     zoomLevel={zoomLevel}
-                //   />
-                // )}
+                betweenContent={({ visibleStart, visibleEnd, zoomLevel }) => (
+                  <EmotionPathGraph
+                    emotionTimeline={data.emotion_timeline}
+                    duration={data.metadata.audio_duration}
+                    speakers={data.speakers}
+                    embedded
+                    zoomStart={visibleStart}
+                    zoomEnd={visibleEnd}
+                    zoomLevel={zoomLevel}
+                  />
+                )}
             />
           </div>
         )}

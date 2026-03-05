@@ -217,10 +217,6 @@ function buildEmotionSeries(emotionTimeline, durationSeconds) {
 }
 
 function EmotionPathGraph({ emotionTimeline, duration, embedded = false }) {
-  // Hume graph temporarily disabled; keep component for later re-enable.
-  return null
-
-  /*
   const wrapperClass = embedded
     ? 'emotion-path-graph embedded'
     : 'conversation-path-graph emotion-path-graph'
@@ -399,7 +395,6 @@ function EmotionPathGraph({ emotionTimeline, duration, embedded = false }) {
       </div>
     </div>
   )
-  */
 }
 
 export default EmotionPathGraph
