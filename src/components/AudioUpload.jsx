@@ -50,11 +50,18 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
 
       const { upload_url: uploadUrl, key: s3Key } = presignResponse.data
 
-      await axios.put(uploadUrl, file, {
+      const uploadResponse = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
         headers: {
           'Content-Type': contentType,
         },
       })
+
+      if (!uploadResponse.ok) {
+        const errorText = await uploadResponse.text()
+        throw new Error(`S3 upload failed: ${uploadResponse.status} ${errorText}`)
+      }
 
       const response = await axios.post(
         `${API_BASE_URL}/analyze?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
