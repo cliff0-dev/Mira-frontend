@@ -3,6 +3,7 @@ import axios from 'axios'
 import './AudioUpload.css'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const ANALYZE_BASE_URL = import.meta.env.VITE_ANALYZE_URL || API_BASE_URL
 const API_KEY = import.meta.env.VITE_API_KEY || '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'
 
 function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
@@ -61,7 +62,7 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
       }
 
       const response = await axios.post(
-        `${API_BASE_URL}/analyze?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
+        `${ANALYZE_BASE_URL}/analyze?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
         { s3_key: s3Key },
         {
           headers: {
