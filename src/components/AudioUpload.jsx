@@ -61,8 +61,8 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
         throw new Error(`S3 upload failed: ${uploadResponse.status} ${errorText}`)
       }
 
-      const response = await axios.post(
-        `${ANALYZE_BASE_URL}/analyze?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
+      const jobResponse = await axios.post(
+        `${ANALYZE_BASE_URL}/jobs?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
         { s3_key: s3Key },
         {
           headers: {
@@ -72,7 +72,36 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
         }
       )
 
-      onAnalysisComplete(response.data)
+      const { job_id: jobId } = jobResponse.data
+      const maxAttempts = 600
+      const pollDelayMs = 3000
+      let result = null
+
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        const statusResponse = await axios.get(
+          `${ANALYZE_BASE_URL}/jobs/${jobId}?include_result=true`,
+          {
+            headers: {
+              'x-api-key': API_KEY,
+            },
+          }
+        )
+        const status = statusResponse.data
+        if (status.status === 'complete' && status.result) {
+          result = status.result
+          break
+        }
+        if (status.status === 'failed') {
+          throw new Error(status.error || 'Analysis job failed')
+        }
+        await new Promise((resolve) => setTimeout(resolve, pollDelayMs))
+      }
+
+      if (!result) {
+        throw new Error('Analysis job timed out')
+      }
+
+      onAnalysisComplete(result)
     } catch (err) {
       const errorMessage = err.response?.data?.detail || err.message || 'Failed to analyze audio'
       onError(errorMessage)
