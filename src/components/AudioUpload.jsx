@@ -32,19 +32,37 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
     onLoading(true)
     onError(null)
 
-    const formData = new FormData()
-    formData.append('audio', file)
-    formData.append('enable_classification', enableClassification)
-    formData.append('max_speakers', maxSpeakers)
-
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/analyze`,
-        formData,
+      const contentType = file.type || 'audio/wav'
+      const presignResponse = await axios.post(
+        `${API_BASE_URL}/uploads/presign`,
+        {
+          filename: file.name,
+          content_type: contentType,
+        },
         {
           headers: {
             'x-api-key': API_KEY,
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      const { upload_url: uploadUrl, file_url: fileUrl } = presignResponse.data
+
+      await axios.put(uploadUrl, file, {
+        headers: {
+          'Content-Type': contentType,
+        },
+      })
+
+      const response = await axios.post(
+        `${API_BASE_URL}/analyze?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
+        { s3_url: fileUrl },
+        {
+          headers: {
+            'x-api-key': API_KEY,
+            'Content-Type': 'application/json',
           },
         }
       )
