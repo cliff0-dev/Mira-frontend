@@ -11,6 +11,54 @@ const QUICK_QUESTIONS = [
   'Which statements are strongest and why?'
 ]
 
+const isBulletLine = (line) => /^(\*|-|•)\s+/.test(line) || /^\d+\.\s+/.test(line)
+
+const parseAnswerBlocks = (answer) => {
+  if (!answer) return []
+  const lines = answer.split('\n')
+  const blocks = []
+  let listBuffer = []
+  let paraBuffer = []
+
+  const flushParagraph = () => {
+    if (paraBuffer.length) {
+      blocks.push({ type: 'paragraph', content: paraBuffer.join(' ') })
+      paraBuffer = []
+    }
+  }
+
+  const flushList = () => {
+    if (listBuffer.length) {
+      blocks.push({ type: 'list', content: [...listBuffer] })
+      listBuffer = []
+    }
+  }
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim()
+    if (!line) {
+      flushParagraph()
+      flushList()
+      return
+    }
+
+    if (isBulletLine(line)) {
+      flushParagraph()
+      const item = line.replace(/^(\*|-|•)\s+/, '').replace(/^\d+\.\s+/, '')
+      listBuffer.push(item)
+      return
+    }
+
+    flushList()
+    paraBuffer.push(line)
+  })
+
+  flushParagraph()
+  flushList()
+
+  return blocks
+}
+
 function ConversationQueryPanel({ conversationId, statements = [] }) {
   const [question, setQuestion] = useState('')
   const [loading, setLoading] = useState(false)
@@ -24,6 +72,11 @@ function ConversationQueryPanel({ conversationId, statements = [] }) {
     }
     return map
   }, [statements])
+
+  const answerBlocks = useMemo(
+    () => parseAnswerBlocks(result?.answer || ''),
+    [result]
+  )
 
   const submitQuery = async (event) => {
     event.preventDefault()
@@ -114,25 +167,46 @@ function ConversationQueryPanel({ conversationId, statements = [] }) {
               {(result.confidence || 'medium').toUpperCase()} confidence
             </div>
           </div>
-          <p className="query-answer">{result.answer}</p>
+          <div className="query-answer">
+            {answerBlocks.map((block, index) => {
+              if (block.type === 'list') {
+                return (
+                  <ul key={`list-${index}`} className="query-answer-list">
+                    {block.content.map((item, idx) => (
+                      <li key={`${index}-${idx}`}>{item}</li>
+                    ))}
+                  </ul>
+                )
+              }
+              return (
+                <p key={`para-${index}`} className="query-answer-paragraph">
+                  {block.content}
+                </p>
+              )
+            })}
+          </div>
 
           <p className="query-model">Model: {result.model}</p>
 
           {Array.isArray(result.evidence_statement_ids) && result.evidence_statement_ids.length > 0 && (
             <div className="query-evidence">
-              <h5>Evidence Statements</h5>
-              <div className="evidence-list">
+              <h5>Evidence (hover to view)</h5>
+              <div className="evidence-chips">
                 {result.evidence_statement_ids.map((id) => {
                   const statement = statementMap.get(Number(id))
                   return (
-                    <div key={`${id}-${statement?.id ?? 'missing'}`} className="evidence-item">
-                      <div className="evidence-meta">
-                        <span>#{id}</span>
-                        {statement?.speaker && <span>{statement.speaker}</span>}
-                        {statement?.phase && <span>{statement.phase}</span>}
-                      </div>
-                      <p>{statement?.text || 'Statement not available in current list.'}</p>
-                    </div>
+                    <span key={`${id}-${statement?.id ?? 'missing'}`} className="evidence-chip">
+                      #{id}
+                      <span className="evidence-tooltip">
+                        <span className="evidence-tooltip-meta">
+                          {statement?.speaker && <span>{statement.speaker}</span>}
+                          {statement?.phase && <span>{statement.phase}</span>}
+                        </span>
+                        <span className="evidence-tooltip-text">
+                          {statement?.text || 'Statement not available in current list.'}
+                        </span>
+                      </span>
+                    </span>
                   )
                 })}
               </div>
