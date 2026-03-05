@@ -59,7 +59,7 @@ const parseAnswerBlocks = (answer) => {
   return blocks
 }
 
-function ConversationQueryPanel({ conversationId, statements = [] }) {
+function ConversationQueryPanel({ conversationId, statements = [], rawTranscript = '' }) {
   const [question, setQuestion] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -93,7 +93,9 @@ function ConversationQueryPanel({ conversationId, statements = [] }) {
         `${API_BASE_URL}/conversations/${conversationId}/query`,
         {
           question: trimmed,
-          max_statements: 120
+          max_statements: 120,
+          statements,
+          raw_transcript: rawTranscript
         },
         {
           headers: {

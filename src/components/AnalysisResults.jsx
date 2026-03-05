@@ -204,6 +204,7 @@ function AnalysisResults({ data }) {
             <ConversationQueryPanel
               conversationId={data.conversation_id}
               statements={data.statements}
+              rawTranscript={data.raw_transcript}
             />
           </div>
         )}
