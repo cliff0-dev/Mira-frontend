@@ -48,7 +48,7 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
         }
       )
 
-      const { upload_url: uploadUrl, file_url: fileUrl } = presignResponse.data
+      const { upload_url: uploadUrl, key: s3Key } = presignResponse.data
 
       await axios.put(uploadUrl, file, {
         headers: {
@@ -58,7 +58,7 @@ function AudioUpload({ onAnalysisComplete, onError, onLoading }) {
 
       const response = await axios.post(
         `${API_BASE_URL}/analyze?enable_classification=${enableClassification}&max_speakers=${maxSpeakers}`,
-        { s3_url: fileUrl },
+        { s3_key: s3Key },
         {
           headers: {
             'x-api-key': API_KEY,
