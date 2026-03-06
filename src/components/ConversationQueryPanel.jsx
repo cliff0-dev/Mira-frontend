@@ -95,6 +95,7 @@ function ConversationQueryPanel({ conversationId, statements = [], rawTranscript
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [result, setResult] = useState(null)
+  const [debugMessage, setDebugMessage] = useState('')
 
   const statementMap = useMemo(() => {
     const map = new Map()
@@ -128,8 +129,16 @@ function ConversationQueryPanel({ conversationId, statements = [], rawTranscript
 
     setLoading(true)
     setError(null)
+    setDebugMessage('')
 
     try {
+      console.info('[query] sending request', {
+        apiBaseUrl: API_BASE_URL,
+        conversationId,
+        questionLength: trimmed.length,
+        statementsCount: Array.isArray(statements) ? statements.length : 0,
+        rawTranscriptLength: rawTranscript?.length || 0,
+      })
       const response = await axios.post(
         `${API_BASE_URL}/conversations/${conversationId}/query`,
         {
@@ -147,11 +156,15 @@ function ConversationQueryPanel({ conversationId, statements = [], rawTranscript
       )
 
       setResult(response.data)
+      setDebugMessage(`Query OK (${response.status}) via ${API_BASE_URL}`)
     } catch (err) {
       const errorMessage =
         err.response?.data?.detail || err.message || 'Failed to run query'
       setError(errorMessage)
       setResult(null)
+      setDebugMessage(
+        `Query failed (${err.response?.status || 'no status'}) via ${API_BASE_URL}`
+      )
     } finally {
       setLoading(false)
     }
@@ -195,6 +208,7 @@ function ConversationQueryPanel({ conversationId, statements = [], rawTranscript
           <span className="query-char-count">{question.length}/1000</span>
         </div>
       </form>
+      {debugMessage && <div className="query-debug">{debugMessage}</div>}
 
       {error && (
         <div className="query-error">
